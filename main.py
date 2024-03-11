@@ -108,3 +108,35 @@ postings_file_path = os.path.join(output_directory, 'postings.json')
 with open(postings_file_path, 'w', encoding='utf-8') as postings_file:
     json.dump(postings, postings_file, ensure_ascii=False, indent=4)
 
+"""3.Test File Search & Retrieval"""
+import json
+
+# Read the test file
+with open('test.txt', 'r', encoding='utf-8') as test_file:
+    test_text = test_file.read()
+
+# Load the index file
+with open('Output/index.json', 'r', encoding='utf-8') as index_file:
+    index = json.load(index_file)
+
+# Load the postings file
+with open('Output/postings.json', 'r', encoding='utf-8') as postings_file:
+    postings = json.load(postings_file)
+
+# Tokenize the test text
+test_tokens = test_text.split()
+
+# Input a sequence of single terms
+while True:
+    term = input("Enter a term (or 'exit' to quit): ")
+    if term.lower() == 'exit':
+        break
+
+    # Check if the term exists in the index
+    if term in index:
+        print(f"Term: {term}")
+        print("Postings:")
+        for posting in postings[term]:
+            print(f"DocID: {posting['document']}, Position: {posting['position']}")
+    else:
+        print("Term not found in the inverted file.")
